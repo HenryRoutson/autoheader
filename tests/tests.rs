@@ -1,8 +1,7 @@
 use std::process::Command;
 use std::env;
-
-
-// sometimes doesn't create new file
+use std::{thread, time};
+use std::path::Path;
 
 
 #[test]
@@ -21,6 +20,9 @@ fn test_basic() {
 		.output()
 		.expect("failed to execute process");
 
+	thread::sleep(time::Duration::from_secs(1)); // so you can see file be added and removed
+
+	assert!(Path::new("tests/basic_test/test-functions.h").exists());
 
 	Command::new("rm")
 		//.arg("-f")
@@ -28,6 +30,8 @@ fn test_basic() {
 		.output()
 		.expect("failed to execute process");
 }
+
+
 
 #[test]
 fn test_make() {
@@ -50,7 +54,11 @@ fn test_make() {
 		.output()
 		.expect("failed to execute process");
 
-	
+	assert!( Path::new("list-functions.h").exists());
+	assert!(!Path::new("main-functions.h").exists());
+
+	thread::sleep(time::Duration::from_secs(1)); // so you can see file be added and removed
+
 	Command::new("make")
 		.arg("clean")
 		.output()
