@@ -19,7 +19,6 @@
 
 /*      TODO
 
-add output checks to automated testing
 get rid of was_public_tag using iterator
 */
 

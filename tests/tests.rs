@@ -2,6 +2,16 @@ use std::process::Command;
 use std::env;
 use std::{thread, time};
 use std::path::Path;
+use std::str;
+
+/*
+Use 
+cargo test -- --test-threads=1 
+
+Instead of 
+cargo test
+*/
+
 
 
 #[test]
@@ -49,11 +59,12 @@ fn test_make() {
 		.output()
 		.expect("failed to execute process");
 
-	Command::new("make")
+	let output = Command::new("make")
 		.arg("run")
 		.output()
 		.expect("failed to execute process");
-
+	
+	assert!(str::from_utf8(&output.stdout).unwrap().ends_with("01234"));
 	assert!( Path::new("list-functions.h").exists());
 	assert!(!Path::new("main-functions.h").exists());
 
@@ -63,5 +74,6 @@ fn test_make() {
 		.arg("clean")
 		.output()
 		.expect("failed to execute process");
+
 
 }
