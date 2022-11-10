@@ -21,3 +21,16 @@ int function_include2() {} // one liner test
 
 
 
+
+
+// public
+int function_include2() 
+{
+
+
+
+} // weird synatx
+
+
+
+

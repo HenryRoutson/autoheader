@@ -17,6 +17,16 @@
 
 *////////////////////////////////////////////////
 
+/*
+TODO
+
+assert output of basic_test
+get working for multline function declarations
+get working for functions not ending with {
+
+deploy 
+*/
+
 use std::fs::File;
 use std::env;
 use std::path::Path;
@@ -65,25 +75,27 @@ fn main() {
     loop {
 
         let line =  c_file_lines.next();
-        if line.is_none() { break; }
 
-        // add header to the h file 
+        if line.is_none() { break; }
         if line.unwrap().unwrap().starts_with(public_tag) {
 
             if h_file.is_none() { // only create file if if will contain anything
 
-                let h_file_string = c_file_string.replace(".c", "-functions.h");
+                // create functions.h file
+                let h_file_string = c_file_string[..c_file_string.len() - 2].to_string() + &"-functions.h".to_string();  
                 let h_file_path = Path::new(&h_file_string);
                 h_file = Some(File::create(h_file_path).expect("could not create header file"));
 
-                // #include "list-structs.h"
+                // #include "****-structs.h" in functions.h for defined types
                 h_file.as_ref().unwrap().write(b"#include \""                             ).expect("Error writing file");
                 h_file.as_ref().unwrap().write(c_file_path.file_stem().unwrap().as_bytes()).expect("Error writing file");
                 h_file.as_ref().unwrap().write( b"-structs.h\"\n\n"                       ).expect("Error writing file");
             }
 
             let function_str = c_file_lines.next().unwrap().unwrap();
-            let function_prototype = function_str[..function_str.find("{").unwrap()].as_bytes(); // for one line functions
+            let function_prototype = function_str[..function_str.find("{") // for one line functions
+                .expect("functions definition lines need to end with{")]
+                .as_bytes(); 
 
             h_file.as_ref().unwrap().write(function_prototype).expect("couldn't write to header file");
             h_file.as_ref().unwrap().write(b";\n"            ).expect("couldn't write to header file");
