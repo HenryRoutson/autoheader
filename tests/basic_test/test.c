@@ -24,7 +24,20 @@ int function_include2() {} // one liner test
 
 
 // public
-int function_include2() 
+int function_include3() 
+{
+
+
+
+} // weird synatx
+
+
+
+
+
+// public
+int 
+function_include4() 
 {
 
 
