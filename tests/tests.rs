@@ -16,8 +16,6 @@ As the tests don't work in parallel
 */
 
 
-
-
 fn assert_same_file_contents(file_name1: String, file_name2: String) {
 
 	// open file 1
@@ -63,79 +61,64 @@ fn assert_correct_file_contents(file: String) {
 
 
 
-
-
-
-
 #[test]
 fn test_basic() {
 
-	Command::new("rm")
-		//.arg("-f")
-		.arg("tests/basic_test/test-functions.h")
-		.output()
-		.expect("failed to execute process");
+	let mut dir = 	env::current_dir().unwrap();
+	dir.push("tests");
+	dir.push("basic_test");
 
+	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	env::set_current_dir(&dir).unwrap();
 
-	Command::new("cargo")
-		.arg("run")
-		.arg("tests/basic_test/test.c")
-		.output()
-		.expect("failed to execute process");
+	Command::new("rm").arg("test-functions.h").output().expect("failed to execute process");
+	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
-	//
-	assert_correct_file_contents("tests/basic_test/test-functions.h".to_string());
+	assert_correct_file_contents("test-functions.h".to_string());
 
-	Command::new("rm")
-		//.arg("-f")
-		.arg("tests/basic_test/test-functions.h")
-		.output()
-		.expect("failed to execute process");
+	Command::new("rm").arg("test-functions.h").output().expect("failed to execute process");
 
+	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
 
 
 
 #[test]
 fn test_empty() {
-	// shouldn't create file
 
+	let mut dir = 	env::current_dir().unwrap();
+	dir.push("tests");
+	dir.push("empty_test");
 
-	Command::new("cargo")
-		.arg("run")
-		.arg("tests/basic_empty/empty.c")
-		.output()
-		.expect("failed to execute process");
+	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	env::set_current_dir(&dir).unwrap();
 
-	assert!(!Path::new("tests/basic_empty/empty-functions.c").exists());
+	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
+	assert!(!Path::new("empty-functions.c").exists());
+
+	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
-
-
 
 
 #[test]
 fn test_linux() {
 
-	Command::new("rm")
-		//.arg("-f")
-		.arg("tests/linux_test/linux-functions.h")
-		.output()
-		.expect("failed to execute process");
+	let mut dir = 	env::current_dir().unwrap();
+	dir.push("tests");
+	dir.push("linux_test");
 
-	Command::new("cargo")
-		.arg("run")
-		.arg("tests/linux_test/linux.c")
-		.output()
-		.expect("failed to execute process");
+	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	env::set_current_dir(&dir).unwrap();
 
-	assert_correct_file_contents("tests/linux_test/linux-functions.h".to_string());
+	Command::new("rm").arg("linux-functions.h").output().expect("failed to execute process");
+	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
-	Command::new("rm")
-		//.arg("-f")
-		.arg("tests/linux_test/linux-functions.h")
-		.output()
-		.expect("failed to execute process");
+	assert_correct_file_contents("linux-functions.h".to_string());
+
+	Command::new("rm").arg("linux-functions.h").output().expect("failed to execute process");
+
+	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
 
 
@@ -143,37 +126,23 @@ fn test_linux() {
 #[test]
 fn test_make() {
 
-	let mut cd = 	env::current_dir().unwrap();
-	cd.push("tests");
-	cd.push("make_test");
+	let mut dir = 	env::current_dir().unwrap();
+	dir.push("tests");
+	dir.push("make_test");
 
-	assert!(cd.is_dir());
-	
-	env::set_current_dir(cd).unwrap();
+	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	env::set_current_dir(&dir).unwrap();
 
-	Command::new("make")
-		.arg("clean")
-		.output()
-		.expect("failed to execute process");
-
-	let output = Command::new("make")
-		.arg("run")
-		.output()
-		.expect("failed to execute process");
-
+	Command::new("make").arg("clean").output().expect("failed to execute process");
+	let output = Command::new("make").arg("run").output().expect("failed to execute process");
 
 	assert!( Path::new("list-functions.h").exists());
 	assert!(!Path::new("main-functions.h").exists());
 	assert!(str::from_utf8(&output.stdout).unwrap().ends_with("01234")); // don't need to test functions file
 
-	Command::new("make")
-		.arg("clean")
-		.output()
-		.expect("failed to execute process");
+	Command::new("make").arg("clean").output().expect("failed to execute process");
 
-
+	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
-
-
 
 

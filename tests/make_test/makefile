@@ -12,13 +12,12 @@ CPPFLAGS  = -Wall -Werror -O3 -g
 LDFLAGS   = -lm
 
 
-# compile c files into object files
-%.o: %.c
-	cargo run $<
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-# link object files together into executable
-$(EXE): $(OBJ) 
+
+cargo_run: 
+	cargo run
+
+$(EXE): cargo_run $(OBJ) 
 	$(COMPILER) $(OBJ) $(CPPFLAGS) -o $(EXE) $(LDFLAGS)
 
 clean:
@@ -26,6 +25,5 @@ clean:
 	rm -f *-functions.h 
 
 run: $(EXE)
-	make
 	./$(EXE) 
 
