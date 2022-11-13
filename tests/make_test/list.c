@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "list-structs.h"
-#include "list-functions.h"
+#include "list.h"
 
 // ---------------------------------------------
 //         L I N K E D     L I S T

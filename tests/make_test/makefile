@@ -22,7 +22,7 @@ $(EXE): cargo_run $(OBJ)
 
 clean:
 	rm -f $(EXE) *.o 
-	rm -f *-functions.h 
+	rm list.h 
 
 run: $(EXE)
 	./$(EXE) 

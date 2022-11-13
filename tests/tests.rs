@@ -42,7 +42,7 @@ fn assert_same_file_contents(file_name1: String, file_name2: String) {
 			let line1 = read1.unwrap().unwrap();
 			let line2 = read2.unwrap().unwrap();
 
-			assert!(line1 == line2);
+			assert!(line1 == line2, "\n\n{line1}\n != \n{line2}\n\n");
 		}
 	}
 }
@@ -71,12 +71,12 @@ fn test_basic() {
 	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
 	env::set_current_dir(&dir).unwrap();
 
-	Command::new("rm").arg("test-functions.h").output().expect("failed to execute process");
+	Command::new("rm").arg("test.h").output().expect("failed to execute process");
 	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
-	assert_correct_file_contents("test-functions.h".to_string());
+	assert_correct_file_contents("test.h".to_string());
 
-	Command::new("rm").arg("test-functions.h").output().expect("failed to execute process");
+	Command::new("rm").arg("test.h").output().expect("failed to execute process");
 
 	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
@@ -95,7 +95,7 @@ fn test_empty() {
 
 	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
-	assert!(!Path::new("empty-functions.c").exists());
+	assert!(!Path::new("empty.h").exists());
 
 	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
@@ -111,12 +111,12 @@ fn test_linux() {
 	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
 	env::set_current_dir(&dir).unwrap();
 
-	Command::new("rm").arg("linux-functions.h").output().expect("failed to execute process");
+	Command::new("rm").arg("linux.h").output().expect("failed to execute process");
 	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
-	assert_correct_file_contents("linux-functions.h".to_string());
+	assert_correct_file_contents("linux.h".to_string());
 
-	Command::new("rm").arg("linux-functions.h").output().expect("failed to execute process");
+	Command::new("rm").arg("linux.h").output().expect("failed to execute process");
 
 	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
 }
@@ -136,9 +136,11 @@ fn test_make() {
 	Command::new("make").arg("clean").output().expect("failed to execute process");
 	let output = Command::new("make").arg("run").output().expect("failed to execute process");
 
-	assert!( Path::new("list-functions.h").exists());
-	assert!(!Path::new("main-functions.h").exists());
-	assert!(str::from_utf8(&output.stdout).unwrap().ends_with("01234")); // don't need to test functions file
+	assert!( Path::new("list.h").exists());
+	assert!(!Path::new("main.h").exists());
+
+	let output_str = str::from_utf8(&output.stdout).unwrap();
+	assert!(output_str.ends_with("01234"), "OUTPUT \n{output_str}\n\n\n"); // don't need to test functions file
 
 	Command::new("make").arg("clean").output().expect("failed to execute process");
 

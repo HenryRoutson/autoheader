@@ -1,4 +1,8 @@
-#include "linux-structs.h"
+// This file was automatically created,
+// any defitions, including typedefs, structs or #define
+// have been moved to a -defs.h file of the same name
+
+#include "linux-defs.h"
 
 static void *crypto842_alloc_ctx(struct crypto_scomp *tfm);
 static int crypto842_init(struct crypto_tfm *tfm);

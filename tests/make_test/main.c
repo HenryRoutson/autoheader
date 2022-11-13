@@ -1,5 +1,4 @@
-#include "list-functions.h"
-#include "list-structs.h"
+#include "list.h"
 
 #include <stdio.h>
 #include <stdlib.h>
