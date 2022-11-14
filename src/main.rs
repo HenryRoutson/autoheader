@@ -23,7 +23,12 @@
 /*
 TODO
 
-Create struct file if it doesn’t exist
+
+
+if not -defs.h file
+    Create
+
+
 Move defs from .h file if there are any, make message
 
 Avoid needing to store executable, use crates.io?
@@ -71,10 +76,18 @@ fn main() {
         assert!(c_file_path.exists(), "c file does not exist");
 
         let mut c_file_content = String::new();
-        File::open(c_file_path).expect("Cannot open file").read_to_string(&mut c_file_content).expect("Rrror reading file contetnts to string");
+        File::open(c_file_path).expect("Cannot open file").read_to_string(&mut c_file_content).expect("Error reading file contetnts to string");
         if !c_file_content.contains(public_tag) {
             println!("  didn't contain any public tags, a functions file was not created : {}", c_file_string);
             break;
+        }
+
+        // create defs file if none
+        let defs_string = c_file_string.replace(".c","-defs.h");
+        let defs_path = Path::new(&defs_string);
+        if !defs_path.exists() {
+            let _ = File::create(defs_path).unwrap();
+            println!("  defs file was created : {}", defs_string);
         }
 
         // create h file
@@ -96,6 +109,7 @@ fn main() {
             h_file.write(&function_prototype).expect(write_error);
             h_file.write(b";\n"             ).expect(write_error);
         } 
+
     }
 
     println!("\nDone\n\n");
