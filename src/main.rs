@@ -23,8 +23,6 @@
 /*
 TODO
 
-Better way to do multiline
-
 Create struct file if it doesn’t exist
 Move defs from .h file if there are any, make message
 
@@ -47,7 +45,16 @@ use std::fs;
 
 fn main() {
 
+    // CONFIG
+
     let public_tag = "// public";
+    let h_file_explaination = b"\
+    // This file was automatically created,\n\
+    // any defitions, including typedefs, structs or #define\n\
+    // have been moved to a -defs.h file of the same name\n\n";
+
+
+    // CODE
 
     print!("\n\n");
 
@@ -77,10 +84,7 @@ fn main() {
         let mut h_file = File::create(h_file_path).expect("could not create header file");
         println!("  functions file was created : {}", c_file_string);
 
-        h_file.write(
-b"// This file was automatically created,
-// any defitions, including typedefs, structs or #define
-// have been moved to a -defs.h file of the same name\n\n").expect(write_error); 
+        h_file.write(h_file_explaination).expect(write_error); 
 
         // #include "****-defs.h" in functions.h for defined types
         h_file.write(b"#include \""                             ).expect(write_error);
