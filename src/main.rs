@@ -23,9 +23,6 @@
 /*
 TODO
 
-
-Add external to .h message \ 
-
 Avoid needing to store executable, use crates.io?
 
 Put in psuedo email for feedback
@@ -46,7 +43,7 @@ fn main() {
     let public_tag = "// public";
     let h_file_explaination = b"\
     // This file was automatically created,\n\
-    // any defitions, including typedefs, structs or #define\n\
+    // any defitions, including typedefs, structs, extern or #define\n\
     // have been moved to a -defs.h file of the same name\n\n";
 
 

@@ -20,9 +20,9 @@ cargo_run:
 	cd src; cargo run
 
 clean:
-	cd src; rm -f $(EXE) *.o 
-	rm $(OBJ:.o=.h)
-
+	cd src; rm -f *.o
+	rm $(OBJ:.o=.h) $(EXE)
+	
 
 # RUNWITH = valgrind --track-origins=yes --leak-check=full
 RUNWITH = 

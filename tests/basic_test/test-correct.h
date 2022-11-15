@@ -1,5 +1,5 @@
 // This file was automatically created,
-// any defitions, including typedefs, structs or #define
+// any defitions, including typedefs, structs, extern or #define
 // have been moved to a -defs.h file of the same name
 
 #include "test-defs.h"
