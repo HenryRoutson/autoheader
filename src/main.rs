@@ -23,14 +23,6 @@
 /*
 TODO
 
-
-
-if not -defs.h file
-    Create
-
-
-Move defs from .h file if there are any, make message
-
 Avoid needing to store executable, use crates.io?
 
 create larger make_test
@@ -79,7 +71,7 @@ fn main() {
         File::open(c_file_path).expect("Cannot open file").read_to_string(&mut c_file_content).expect("Error reading file contetnts to string");
         if !c_file_content.contains(public_tag) {
             println!("  didn't contain any public tags, a functions file was not created : {}", c_file_string);
-            break;
+            continue;
         }
 
         // create defs file if none
