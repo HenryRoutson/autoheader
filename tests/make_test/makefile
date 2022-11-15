@@ -12,18 +12,19 @@ CPPFLAGS  = -Wall -Werror -O3 -g
 LDFLAGS   = -lm
 
 
-
+$(EXE): cargo_run $(OBJ) 
+	$(COMPILER) $(OBJ) $(CPPFLAGS) -o $(EXE) $(LDFLAGS)
 
 cargo_run: 
 	cargo run
-
-$(EXE): cargo_run $(OBJ) 
-	$(COMPILER) $(OBJ) $(CPPFLAGS) -o $(EXE) $(LDFLAGS)
 
 clean:
 	rm -f $(EXE) *.o 
 	rm list.h 
 
-run: $(EXE)
-	./$(EXE) 
 
+# RUNWITH = valgrind --track-origins=yes --leak-check=full
+RUNWITH = 
+
+run: $(EXE)
+	$(RUNWITH) ./$(EXE) 

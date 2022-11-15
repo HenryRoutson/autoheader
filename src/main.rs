@@ -23,11 +23,10 @@
 /*
 TODO
 
+
+Add external to .h message \ 
+
 Avoid needing to store executable, use crates.io?
-
-create larger make_test
-
-improve makefile
 
 Put in psuedo email for feedback
 
@@ -87,7 +86,8 @@ fn main() {
         let h_file_string = c_file_string.replace(".c", ".h");  
         let h_file_path = Path::new(&h_file_string);
         let mut h_file = File::create(h_file_path).expect("could not create header file");
-        println!("  functions file was created : {}", c_file_string);
+        assert!(h_file_path.exists());
+        println!("  functions file was created : {}", h_file_string);
 
         h_file.write(h_file_explaination).expect(write_error); 
 

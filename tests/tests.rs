@@ -102,6 +102,38 @@ fn test_empty() {
 
 
 #[test]
+fn test_flow() {
+
+	Command::new("make").arg("clean").output().expect("failed to execute process");
+
+	let mut dir = 	env::current_dir().unwrap();
+	dir.push("tests");
+	dir.push("flow_solver_test");
+
+	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	env::set_current_dir(&dir).unwrap();
+
+	Command::new("make").output().expect("failed to execute process");
+
+
+
+	assert!( Path::new("src/engine.h").exists());
+	assert!( Path::new("src/extensions.h").exists());
+	assert!(!Path::new("src/flow_solver.h").exists());
+	assert!( Path::new("src/node.h").exists());
+	assert!( Path::new("src/queues.h").exists());
+	assert!( Path::new("src/search.h").exists());
+	assert!( Path::new("src/utils.h").exists());
+
+
+	Command::new("make").arg("clean").output().expect("failed to execute process");
+	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
+
+}
+
+
+
+#[test]
 fn test_linux() {
 
 	let mut dir = 	env::current_dir().unwrap();
