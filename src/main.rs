@@ -34,6 +34,7 @@ use std::path::Path;
 use std::io::{Read, Write};
 use std::os::unix::ffi::OsStrExt;
 use std::fs;
+use colored::*;
 
 
 fn main() {
@@ -57,7 +58,7 @@ fn main() {
         let c_file_path = path.expect("Error path does not exist").path();
         let c_file_string = c_file_path.to_str().expect("path to string error");
 
-        if !c_file_string.ends_with(".c") { println!("  doesn't end with .c : {}", c_file_string); continue; }
+        if !c_file_string.ends_with(".c") { println!("{}", format!(" {} : {} ", "doesn't end with .c file extension", c_file_string).on_truecolor(247, 103, 87)); continue; } // red
 
         // open .c file contents++
         let c_file_path = Path::new(&c_file_string); 
@@ -66,7 +67,7 @@ fn main() {
         let mut c_file_content = String::new();
         File::open(c_file_path).expect("Cannot open file").read_to_string(&mut c_file_content).expect("Error reading file contetnts to string");
         if !c_file_content.contains(public_tag) {
-            println!("  didn't contain any public tags, a functions file was not created : {}", c_file_string);
+            println!("{}",format!(" {} : {} ", "no public tags, a function prototype file wasn't created", c_file_string).on_truecolor(235, 177, 52)); // orange
             continue;
         }
 
@@ -75,7 +76,7 @@ fn main() {
         let defs_path = Path::new(&defs_string);
         if !defs_path.exists() {
             let _ = File::create(defs_path).unwrap();
-            println!("  defs file was created : {}", defs_string);
+            println!(" {} : {} ", "defs file was created", defs_string);
         }
 
         // create h file
@@ -84,7 +85,7 @@ fn main() {
         let h_file_path = Path::new(&h_file_string);
         let mut h_file = File::create(h_file_path).expect("could not create header file");
         assert!(h_file_path.exists());
-        println!("  functions file was created : {}", h_file_string);
+        println!("{}", format!(" {} : {} ", "functions prototype file was created", h_file_string).on_truecolor(135, 245, 166)); // green
 
         h_file.write(h_file_explaination).expect(write_error); 
 
