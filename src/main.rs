@@ -27,6 +27,7 @@ static H_FILE_EXPLAINATION: &[u8;160] = b"\
 // This file was automatically created,\n\
 // any defitions, including typedefs, structs, extern or #define\n\
 // have been moved to a -defs.h file of the same name\n\n";
+static WRITE_ERROR: &str = "Error writing to file";
 
 ////////////////////////////////////////////////
 
@@ -69,7 +70,12 @@ use std::env;
 
 fn main() {
 
-    let is_setup: bool = env::args().skip(1).next().unwrap().to_lowercase() == "setup";
+    let mut args =  env::args().skip(1);
+
+    let mut is_setup: bool = false;
+    if args.len() == 1 {
+        is_setup = args.next().unwrap().to_lowercase() == "setup";
+    }
 
     print!("\n\n");
     let paths = fs::read_dir("./").expect("Error finding current directory");
@@ -121,25 +127,22 @@ fn create_h(c_file_string: &str) { // use
     }
 
     // create h file
-    let write_error = "Error writing to file";
     let h_file_string = c_file_string.replace(".c", ".h");  
     let h_file_path = Path::new(&h_file_string);
     let mut h_file = File::create(h_file_path).expect("could not create header file");
     assert!(h_file_path.exists());
     println!("{}", format!(" {} : {} ", "functions prototype file was created", h_file_string).on_truecolor(135, 245, 166)); // green
 
-    h_file.write(H_FILE_EXPLAINATION).expect(write_error); 
+    h_file.write(H_FILE_EXPLAINATION).expect(WRITE_ERROR); 
 
     // #include "****-defs.h" in functions.h for defined types
-    h_file.write(b"#include \""                             ).expect(write_error);
-    h_file.write(c_file_path.file_stem().expect("Error: no file stem").as_bytes()).expect(write_error);
-    h_file.write( b"-defs.h\"\n\n"                       ).expect(write_error);
+    h_file.write(b"#include \""                                                       ).expect(WRITE_ERROR);
+    h_file.write(c_file_path.file_stem().expect("Error: no file stem").as_bytes()).expect(WRITE_ERROR);
+    h_file.write( b"-defs.h\"\n\n"                                                    ).expect(WRITE_ERROR);
 
     for s in c_file_content.split(PUBLIC_TAG).skip(1) {
         let function_prototype = s[..s.find('{').expect("{ not found after // public")-1].trim().as_bytes();
-        h_file.write(&function_prototype).expect(write_error);
-        h_file.write(b";\n"             ).expect(write_error);
+        h_file.write(&function_prototype).expect(WRITE_ERROR);
+        h_file.write(b";\n"             ).expect(WRITE_ERROR);
     } 
 }
-
-

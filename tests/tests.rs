@@ -19,11 +19,17 @@ As the tests don't work in parallel
 fn assert_same_file_contents(file_name1: String, file_name2: String) {
 
 	// open file 1
-	let path1 = Path::new(&file_name1); assert!(path1.exists());
+	let path1 = Path::new(&file_name1); 
+	if !path1.exists() { panic!("\n\n{:#?}\n DOES NOT EXIST \n\n", path1.to_str()) }
+
 	let mut reader1 = BufReader::new(File::open(&path1).unwrap()).lines();
 
 	// open file 2
-	let path2 = Path::new(&file_name2); assert!(path2.exists());
+	let path2 = Path::new(&file_name2);
+	if !path2.exists() { panic!("\n\n{:#?}\n DOES NOT EXIST \n\n", path2.to_str()) }
+	
+	
+	assert!(path2.exists());
 	let mut reader2 = BufReader::new(File::open(&path2).unwrap()).lines();
 
 	// compare
