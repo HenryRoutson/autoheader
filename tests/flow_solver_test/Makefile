@@ -34,15 +34,15 @@ run: $(EXE)
 	#$(RUNWITH) ./$(EXE)  -A -d puzzles/deadlock_6x6_01.txt
 	#$(RUNWITH) ./$(EXE)  -A -d puzzles/unsolvable_cross.txt
 
-	#$(RUNWITH) ./$(EXE) -A -d puzzles/regular_5x5_01.txt
+	$(RUNWITH) ./$(EXE) -A -d puzzles/regular_5x5_01.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/regular_6x6_01.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/regular_7x7_01.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/regular_8x8_01.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/regular_9x9_01.txt
 
-	$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_10x10_01.txt
-	$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_11x11_01.txt
-	$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_12x12_30.txt
+	#$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_10x10_01.txt
+	#$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_11x11_01.txt
+	#$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_12x12_30.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_13x13_26.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_14x14_01.txt
 	#$(RUNWITH) ./$(EXE) -A -d puzzles/jumbo_14x14_02.txt
