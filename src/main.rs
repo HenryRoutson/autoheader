@@ -98,14 +98,15 @@ fn main() {
 
 
 
-fn setup(_h_file_string: &str) {
+fn setup(file_string: &str) {
 
 }
 
 
-fn create_h(c_file_string: &str) { // use
+fn create_h(file_string: &str) { // use
 
-    if !c_file_string.ends_with(".c") { println!("{}", format!(" {} : {} ", "doesn't end with .c file extension", c_file_string).on_truecolor(247, 103, 87)); return; } // red
+    if !file_string.ends_with(".c") { println!("{}", format!(" {} : {} ", "doesn't end with .c file extension", file_string).on_truecolor(247, 103, 87)); return; } // red
+    let c_file_string = file_string;
 
     // open .c file contents++
     let c_file_path = Path::new(&c_file_string); 
@@ -130,7 +131,6 @@ fn create_h(c_file_string: &str) { // use
     let h_file_string = c_file_string.replace(".c", ".h");  
     let h_file_path = Path::new(&h_file_string);
     let mut h_file = File::create(h_file_path).expect("could not create header file");
-    assert!(h_file_path.exists());
     println!("{}", format!(" {} : {} ", "functions prototype file was created", h_file_string).on_truecolor(135, 245, 166)); // green
 
     h_file.write(H_FILE_EXPLAINATION).expect(WRITE_ERROR); 
