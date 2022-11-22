@@ -34,6 +34,7 @@ static H_FILE_EXPLAINATION: &[u8;160] = b"\
 /*
 TODO
 
+
 turn into functions
 
 convert automatically
@@ -63,25 +64,41 @@ use std::io::{Read, Write};
 use std::os::unix::ffi::OsStrExt;
 use std::fs;
 use colored::*;
+use std::env;
 
 
 fn main() {
+
+    let is_setup: bool = env::args().skip(1).next().unwrap().to_lowercase() == "setup";
 
     print!("\n\n");
     let paths = fs::read_dir("./").expect("Error finding current directory");
     for path in paths {
 
-        let c_file_path = path.expect("Error path does not exist").path();
-        let c_file_string = c_file_path.to_str().expect("path to string error");
+        let file_path = path.expect("Error path does not exist").path();
+        let file_string = file_path.to_str().expect("path to string error");
 
-        create_header_file(c_file_string);
+        if is_setup {
+            setup(file_string);
+        } else {
+            create_h(file_string);
+        }
+        create_h(file_string);
     }
     println!("\nDone\n\n");
 }
 
-fn create_header_file(c_file_string: &str) {
 
-    // CODE
+
+
+
+fn setup(_h_file_string: &str) {
+
+}
+
+
+fn create_h(c_file_string: &str) { // use
+
     if !c_file_string.ends_with(".c") { println!("{}", format!(" {} : {} ", "doesn't end with .c file extension", c_file_string).on_truecolor(247, 103, 87)); return; } // red
 
     // open .c file contents++
@@ -99,7 +116,7 @@ fn create_header_file(c_file_string: &str) {
     let defs_string = c_file_string.replace(".c","-defs.h");
     let defs_path = Path::new(&defs_string);
     if !defs_path.exists() {
-        let _ = File::create(defs_path).unwrap();
+        File::create(defs_path).expect("could not create defs file");
         println!(" {} : {} ", "defs file was created", defs_string);
     }
 
