@@ -17,7 +17,7 @@ Instead of
 cargo test
 
 As the tests don't work in parallel
-(use twice)
+(use twice to check file removes)
 */
 
 
@@ -123,7 +123,6 @@ fn test_flow() {
 	assert!( Path::new("src/queues.h").exists());
 	assert!( Path::new("src/search.h").exists());
 	assert!( Path::new("src/utils.h").exists());
-
 
 	Command::new("make").arg("clean").output().expect("failed to execute process");
 	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();

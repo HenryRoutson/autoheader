@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 colored = "2"
 regex = "1"
+walkdir = "2"

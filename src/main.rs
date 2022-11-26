@@ -38,6 +38,8 @@ static WRITE_ERROR: &str = "Error writing to file";
 /*
 TODO
 
+Test with large project
+\
 Avoid needing to store executable, use crates.io?
 
 Put in psuedo email for feedback
@@ -51,11 +53,10 @@ use std::ops::Add;
 use std::path::Path;
 use std::io::{Read, Write};
 use std::os::unix::ffi::OsStrExt;
-use std::fs;
 use colored::*;
 use std::env;
 use std::process::Command;
-
+use walkdir::WalkDir;
 
 pub mod regex_ext;
 pub mod c;
@@ -64,7 +65,8 @@ pub mod c;
 fn main() {
 
 
-    let mut args =  env::args().skip(1);
+    let mut args =  env::args();
+    let _cd = args.next().unwrap();
 
     let mut run_setup: bool = false;
     if args.len() >= 1 {
@@ -72,18 +74,22 @@ fn main() {
     }
 
     print!("\n\n");
-    let paths = fs::read_dir("./").expect("Error finding current directory");
-    for path in paths {
 
-        let file_path = path.expect("Error path does not exist").path();
-        let file_string = file_path.to_str().expect("path to string error");
 
+    for entry in WalkDir::new("./").into_iter().filter_map(|e| e.ok()) {
+
+        let file_path = entry.path().display().to_string();
+        
         if run_setup {
-            setup(file_string);
+            setup(&file_path);
         } else {
-            create_h(file_string);
+            create_h(&file_path);
         }
     }
+
+
+
+
     println!("\nDone\n\n");
     
 

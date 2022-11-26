@@ -17,7 +17,7 @@ $(EXE): cargo_run $(OBJ)
 	$(COMPILER) $(OBJ) $(CPPFLAGS) -o $(EXE) $(LDFLAGS)
 
 cargo_run: 
-	cd src; cargo run
+	cargo run
 
 clean:
 	cd src; rm -f *.o
