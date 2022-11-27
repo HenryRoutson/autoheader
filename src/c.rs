@@ -1,8 +1,9 @@
 
 use std::fs::File;
 use std::io::Read;
-use crate::regex_ext;
 use std::path::Path;
+
+use crate::regex_ext;
 
 pub fn isolate_functions(file_string: &str) -> String {
 

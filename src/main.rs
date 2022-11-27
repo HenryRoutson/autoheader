@@ -38,8 +38,8 @@ static WRITE_ERROR: &str = "Error writing to file";
 /*
 TODO
 
-Test with large project
-\
+Test convert with large project
+
 Avoid needing to store executable, use crates.io?
 
 Put in psuedo email for feedback
