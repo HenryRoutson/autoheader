@@ -6,6 +6,7 @@ use std::fs::File;
 use std::io::Read;
 
 pub mod test_utils;
+use std::path::PathBuf;
 
 
 /*
@@ -22,6 +23,13 @@ As the tests don't work in parallel
 
 
 
+fn check_dir(dir: &PathBuf) {
+	assert!(!dir.to_string_lossy().contains(" "), "Dir {:#?}", dir.to_str());
+	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+}
+
+
+
 #[test]
 fn test_basic() {
 
@@ -29,7 +37,8 @@ fn test_basic() {
 	dir.push("tests");
 	dir.push("basic_test");
 
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	check_dir(&dir);
+	
 	env::set_current_dir(&dir).unwrap();
 
 	Command::new("rm").arg("test.h").output().expect("failed to execute process");
@@ -50,7 +59,9 @@ fn test_convert() {
 	dir.push("tests");
 	dir.push("convert_test1");
 
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+
+	check_dir(&dir);
+
 	env::set_current_dir(&dir).unwrap();
 
 	Command::new("cp").arg("convert.c").arg("output/convert.c").output().expect("failed to execute process");
@@ -91,7 +102,8 @@ fn test_empty() {
 	dir.push("tests");
 	dir.push("empty_test");
 
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	check_dir(&dir);
+
 	env::set_current_dir(&dir).unwrap();
 
 	Command::new("cargo").arg("run").output().expect("failed to execute process");
@@ -111,7 +123,8 @@ fn test_flow() {
 	dir.push("tests");
 	dir.push("flow_solver_test");
 
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	check_dir(&dir);
+
 	env::set_current_dir(&dir).unwrap();
 
 	Command::new("make").output().expect("failed to execute process");
@@ -136,7 +149,8 @@ fn test_linux() {
 	dir.push("tests");
 	dir.push("linux_test");
 
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	check_dir(&dir);
+
 	env::set_current_dir(&dir).unwrap();
 
 	Command::new("rm").arg("linux.h").output().expect("failed to execute process");
@@ -158,7 +172,8 @@ fn test_make() {
 	dir.push("tests");
 	dir.push("make_test");
 
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	check_dir(&dir);
+	
 	env::set_current_dir(&dir).unwrap();
 
 	Command::new("make").arg("clean").output().expect("failed to execute process");
