@@ -24,8 +24,8 @@ As the tests don't work in parallel
 
 
 fn check_dir(dir: &PathBuf) {
-	assert!(!dir.to_string_lossy().contains(" "), "Dir {:#?}", dir.to_str());
-	assert!(dir.is_dir(), "{}", fs::metadata(dir).unwrap_err());
+	assert!(!dir.to_string_lossy().contains(" "), "Error - contains space : {:#?}", dir.to_str());
+	assert!(dir.is_dir(), "{} : {}", dir.to_str().get_or_insert("no valid string"), fs::metadata(dir).unwrap_err());
 }
 
 
@@ -34,6 +34,9 @@ fn check_dir(dir: &PathBuf) {
 fn test_basic() {
 
 	let mut dir = 	env::current_dir().unwrap();
+
+	check_dir(&dir);
+
 	dir.push("tests");
 	dir.push("basic_test");
 
@@ -56,6 +59,9 @@ fn test_basic() {
 fn test_convert() {
 	
 	let mut dir = env::current_dir().unwrap();
+
+	check_dir(&dir);
+
 	dir.push("tests");
 	dir.push("convert_test1");
 
@@ -98,6 +104,9 @@ fn test_convert() {
 fn test_empty() {
 
 	let mut dir = env::current_dir().unwrap();
+
+	check_dir(&dir);
+
 	dir.push("tests");
 	dir.push("empty_test");
 
@@ -119,6 +128,9 @@ fn test_flow() {
 	Command::new("make").arg("clean").output().expect("failed to execute process");
 
 	let mut dir = env::current_dir().unwrap();
+
+	check_dir(&dir);
+
 	dir.push("tests");
 	dir.push("flow_solver_test");
 
