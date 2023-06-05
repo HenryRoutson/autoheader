@@ -7,7 +7,7 @@ use std::io::Read;
 
 pub mod test_utils;
 use std::path::PathBuf;
-
+use std::fs;
 
 /*
 Use 
@@ -25,7 +25,7 @@ As the tests don't work in parallel
 
 fn check_dir(dir: &PathBuf) {
 	assert!(!dir.to_string_lossy().contains(" "), "Dir {:#?}", dir.to_str());
-	assert!(dir.is_dir(), "Dir {:#?}", dir.to_str());
+	assert!(dir.is_dir(), "{}", fs::metadata(dir).unwrap_err());
 }
 
 
@@ -58,7 +58,6 @@ fn test_convert() {
 	let mut dir = env::current_dir().unwrap();
 	dir.push("tests");
 	dir.push("convert_test1");
-
 
 	check_dir(&dir);
 
