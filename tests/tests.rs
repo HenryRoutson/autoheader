@@ -69,6 +69,7 @@ fn test_convert() {
 
 	env::set_current_dir(&dir).unwrap();
 
+	Command::new("mkdir").arg("output").output().expect("failed to execute process");
 	Command::new("cp").arg("convert.c").arg("output/convert.c").output().expect("failed to execute process");
 	Command::new("cp").arg("convert.h").arg("output/convert.h").output().expect("failed to execute process");
 
