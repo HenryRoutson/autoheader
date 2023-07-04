@@ -146,11 +146,11 @@ fn setup(file_string: &str) {
     Command::new("rm").arg(&h_file_path).output().expect("failed to execute process");
 
     // write back c and h file
-    File::create(&c_file_path).unwrap().write(c_file_content.as_bytes()).unwrap();
-    File::create(&h_file_path).unwrap().write(h_file_content.as_bytes()).unwrap();
+    File::create(&c_file_path).unwrap().write_all(c_file_content.as_bytes()).unwrap();
+    File::create(&h_file_path).unwrap().write_all(h_file_content.as_bytes()).unwrap();
 
     // rename h file to -defs.h
-    Command::new("mv").arg(&h_file_path).arg(&defs_path).output().expect("failed to execute process");
+    Command::new("mv").arg(&h_file_path).arg(defs_path).output().expect("failed to execute process");
 
 }
 
@@ -176,7 +176,7 @@ fn create_h(file_string: &str) { // use
     let defs_path = Path::new(&defs_string);
     if !defs_path.exists() {
         File::create(defs_path).expect("could not create defs file");
-        println!(" {} : {} ", "defs file was created", defs_string);
+        println!(" defs file was created : {} ", defs_string);
     }
 
     // create h file
@@ -185,16 +185,16 @@ fn create_h(file_string: &str) { // use
     let mut h_file = File::create(h_file_path).expect("could not create header file");
     println!("{}", format!(" {} : {} ", "functions prototype file was created", h_file_string).on_truecolor(135, 245, 166)); // green
 
-    h_file.write(H_FILE_EXPLAINATION).expect(WRITE_ERROR); 
+    h_file.write_all(H_FILE_EXPLAINATION).expect(WRITE_ERROR); 
 
     // #include "****-defs.h" in functions.h for defined types
-    h_file.write(b"#include \""                                                       ).expect(WRITE_ERROR);
-    h_file.write(c_file_path.file_stem().expect("Error: no file stem").as_bytes()).expect(WRITE_ERROR);
-    h_file.write( b"-defs.h\"\n\n"                                                    ).expect(WRITE_ERROR);
+    h_file.write_all(b"#include \""                                                       ).expect(WRITE_ERROR);
+    h_file.write_all(c_file_path.file_stem().expect("Error: no file stem").as_bytes()).expect(WRITE_ERROR);
+    h_file.write_all( b"-defs.h\"\n\n"                                                    ).expect(WRITE_ERROR);
 
     for s in c_file_content.split(PUBLIC_TAG).skip(1) {
         let function_prototype = s[..s.find('{').expect("{ not found after // public")-1].trim().as_bytes();
-        h_file.write(&function_prototype).expect(WRITE_ERROR);
-        h_file.write(b";\n"             ).expect(WRITE_ERROR);
+        h_file.write_all(function_prototype).expect(WRITE_ERROR);
+        h_file.write_all(b";\n"             ).expect(WRITE_ERROR);
     } 
 }
