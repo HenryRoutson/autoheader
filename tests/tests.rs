@@ -85,7 +85,7 @@ fn test_convert() {
 
 	assert!( Path::new("convert-defs.h").exists());
 	assert!( Path::new("convert.c").exists());
-	assert!(!Path::new("convert.h").exists());
+	assert!(!Path::new("convert.h").exists()); 
 
 	// assert contents
 	let mut defs_content = String::new();
@@ -116,10 +116,10 @@ fn test_empty() {
 
 	dir.push("tests");
 	dir.push("empty_test");
-
-	check_dir(&dir);
-
 	env::set_current_dir(&dir).unwrap();
+
+    Command::new("rm").arg("-rf").arg("output").output().expect("failed to execute process");
+    Command::new("mkdir").arg("output").output().expect("failed to execute process");
 
 	Command::new("cargo").arg("run").output().expect("failed to execute process");
 
