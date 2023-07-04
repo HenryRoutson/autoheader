@@ -129,13 +129,13 @@ fn setup(file_string: &str) {
     let mut h_file_content = String::new();
     h_file.read_to_string(& mut h_file_content).unwrap();
 
-    for prototype in functions.split("\n") {
+    for prototype in functions.split('\n') {
         
         let function  = &prototype[..prototype.len()-1]; // remove semicolon   int x(); -> int x()
         println!("{}", function);
 
         // add public tags to c file
-        c_file_content = c_file_content.replace(&function, &(PUBLIC_TAG.to_string() + &function));
+        c_file_content = c_file_content.replace(function, &(PUBLIC_TAG.to_string() + function));
 
         // remove function prototypes from h file
         h_file_content = h_file_content.replace(prototype, "");

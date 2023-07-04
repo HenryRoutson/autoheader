@@ -39,7 +39,7 @@ pub fn isolate_functions(file_string: &str) -> String {
 	// remove unneeded lines
 	regex_ext::replace_regex_matches(&mut file_contents, "\n+", "\n");
 
-	return file_contents;
+	file_contents
 }
 
 
