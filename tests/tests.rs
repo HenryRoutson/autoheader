@@ -1,4 +1,4 @@
-use std::path;
+
 use std::process::Command;
 use std::env;
 use std::str;
@@ -23,13 +23,6 @@ As the tests don't work in parallel
 */
 
 
-const autoheader_dir: Option<PathBuf> = None;
-
-use std::sync::Once;
-
-static Setup: Once = Once::new();
-
-
 
 fn check_dir(dir: &PathBuf) {
 	assert!(!dir.to_string_lossy().contains(" "), "Error - contains space : {:#?}", dir.to_str());
@@ -41,10 +34,12 @@ fn check_dir(dir: &PathBuf) {
 #[test]
 fn test_basic() {
 
-	let mut dir = 	env::current_dir().unwrap();
-    assert!(dir.ends_with("autoheader"));
 
-	check_dir(&dir);
+    let original_dir = env::current_dir().unwrap();
+    assert!(original_dir.ends_with("autoheader"));
+    check_dir(&original_dir);
+	let mut dir = original_dir.clone();
+
 
 	dir.push("tests");
 	dir.push("basic_test");
@@ -60,17 +55,17 @@ fn test_basic() {
 
 	Command::new("rm").arg("test.h").output().expect("failed to execute process");
 
-	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
+	env::set_current_dir(&original_dir).unwrap();
 }
 
 
 #[test]
 fn test_convert() {
 	
-	let mut dir = env::current_dir().unwrap();
-    assert!(dir.ends_with("autoheader"));
-
-	check_dir(&dir);
+    let original_dir = env::current_dir().unwrap();
+    assert!(original_dir.ends_with("autoheader"));
+    check_dir(&original_dir);
+	let mut dir = original_dir.clone();
 
 	dir.push("tests");
 	dir.push("convert_test1");
@@ -106,7 +101,7 @@ fn test_convert() {
 	Command::new("rm").arg("convert.c").output().expect("failed to execute process");
 	Command::new("rm").arg("convert-defs.h").output().expect("failed to execute process");
 
-	env::set_current_dir(&dir.parent().unwrap().parent().unwrap().parent().unwrap()).unwrap();
+	env::set_current_dir(&original_dir).unwrap();
 }
 
 
@@ -114,10 +109,10 @@ fn test_convert() {
 #[test]
 fn test_empty() {
 
-	let mut dir = env::current_dir().unwrap();
-    assert!(dir.ends_with("autoheader"), "Found {}", dir.to_str().unwrap());
-
-	check_dir(&dir);
+    let original_dir = env::current_dir().unwrap();
+    assert!(original_dir.ends_with("autoheader"));
+    check_dir(&original_dir);
+	let mut dir = original_dir.clone();
 
 	dir.push("tests");
 	dir.push("empty_test");
@@ -130,19 +125,19 @@ fn test_empty() {
 
 	assert!(!Path::new("empty.h").exists());
 
-	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
+	env::set_current_dir(&original_dir).unwrap();
 }
 
 
 #[test]
 fn test_flow() {
 
+    let original_dir = env::current_dir().unwrap();
+    assert!(original_dir.ends_with("autoheader"));
+    check_dir(&original_dir);
+	let mut dir = original_dir.clone();
+
 	Command::new("make").arg("clean").output().expect("failed to execute process");
-
-	let mut dir = env::current_dir().unwrap();
-    assert!(dir.ends_with("autoheader"), "Found {}", dir.to_str().unwrap());
-
-	check_dir(&dir);
 
 	dir.push("tests");
 	dir.push("flow_solver_test");
@@ -162,15 +157,17 @@ fn test_flow() {
 	assert!( Path::new("src/utils.h").exists());
 
 	Command::new("make").arg("clean").output().expect("failed to execute process");
-	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
+	env::set_current_dir(&original_dir).unwrap();
 
 }
 
 #[test]
 fn test_linux() {
 
-	let mut dir = env::current_dir().unwrap();
-    assert!(dir.ends_with("autoheader"), "Found {}", dir.to_str().unwrap());
+    let original_dir = env::current_dir().unwrap();
+    assert!(original_dir.ends_with("autoheader"));
+    check_dir(&original_dir);
+	let mut dir = original_dir.clone();
 
 	dir.push("tests");
 	dir.push("linux_test");
@@ -186,7 +183,7 @@ fn test_linux() {
 
 	Command::new("rm").arg("linux.h").output().expect("failed to execute process");
 
-	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
+	env::set_current_dir(&original_dir).unwrap();
 }
 
 
@@ -194,9 +191,10 @@ fn test_linux() {
 #[test]
 fn test_make() {
 
-	let mut dir = env::current_dir().unwrap();
-    assert!(dir.ends_with("autoheader"), "Found {}", dir.to_str().unwrap());
-
+    let original_dir = env::current_dir().unwrap();
+    assert!(original_dir.ends_with("autoheader"));
+    check_dir(&original_dir);
+	let mut dir = original_dir.clone();
 
 	dir.push("tests");
 	dir.push("make_test");
@@ -216,7 +214,7 @@ fn test_make() {
 
 	Command::new("make").arg("clean").output().expect("failed to execute process");
 
-	env::set_current_dir(&dir.parent().unwrap().parent().unwrap()).unwrap();
+	env::set_current_dir(&original_dir).unwrap();
 }
 
 
