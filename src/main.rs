@@ -36,6 +36,8 @@ static WRITE_ERROR: &str = "Error writing to file";
 /*
 TODO
 
+cargo clippy -- -D clippy::pedantic
+
 Test convert with large project
 
 Avoid needing to store executable, use crates.io?
@@ -46,7 +48,7 @@ multithreading
 
 */
 
-use colored::*;
+use colored::Colorize;
 use std::env;
 use std::fs::File;
 use std::io::{Read, Write};
