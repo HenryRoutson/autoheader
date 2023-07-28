@@ -86,7 +86,7 @@ fn main() {
 }
 
 fn setup(file_string: &str) {
-    println!("\n\n\n\n Running  Setup \n  {} \n", file_string);
+    println!("\n\n\n\n Running  Setup \n  {file_string} \n");
 
     if file_string.ends_with("-defs.h") {
         println!("-defs file already exists");
@@ -130,7 +130,7 @@ fn setup(file_string: &str) {
 
     for prototype in functions.split('\n') {
         let function = &prototype[..prototype.len() - 1]; // remove semicolon   int x(); -> int x()
-        println!("{}", function);
+        println!("{function}");
 
         // add public tags to c file
         c_file_content = c_file_content.replace(function, &(PUBLIC_TAG.to_string() + function));
@@ -170,6 +170,7 @@ fn setup(file_string: &str) {
 fn create_h(file_string: &str) {
     // use
 
+    #[allow(clippy::::case-sensitive-file-extension-comparisons)]
     if !file_string.ends_with(".c") {
         println!(
             "{}",
@@ -209,7 +210,7 @@ fn create_h(file_string: &str) {
     let defs_path = Path::new(&defs_string);
     if !defs_path.exists() {
         File::create(defs_path).expect("could not create defs file");
-        println!(" defs file was created : {} ", defs_string);
+        println!(" defs file was created : {defs_string} ");
     }
 
     // create h file

@@ -5,9 +5,8 @@ use std::path::Path;
 use crate::regex_ext;
 
 pub fn isolate_functions(file_string: &str) -> String {
-    if !Path::new(file_string).exists() {
-        panic!("File does not exist {}", file_string);
-    }
+  
+    assert!(Path::new(file_string).exists(), "File does not exist {}", file_string);
 
     let mut file = File::open(file_string).expect("couldn't open file");
     let mut file_contents = String::new();
