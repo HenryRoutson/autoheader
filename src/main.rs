@@ -36,8 +36,6 @@ static WRITE_ERROR: &str = "Error writing to file";
 /*
 TODO
 
-cargo clippy -- -D clippy::pedantic
-
 Test convert with large project
 
 Avoid needing to store executable, use crates.io?
@@ -170,7 +168,6 @@ fn setup(file_string: &str) {
 fn create_h(file_string: &str) {
     // use
 
-    #[allow(clippy::::case-sensitive-file-extension-comparisons)]
     if !file_string.ends_with(".c") {
         println!(
             "{}",
